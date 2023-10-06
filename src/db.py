@@ -3,7 +3,7 @@
 import json
 
 def loadDB(path):
-  f = open(path, 'w+')
+  f = open(path, 'r+')
   try:
     d = json.loads(f.read())
     f.close()
@@ -116,50 +116,6 @@ class ProductController:
       return True
     else:
       return False
-    
-# Sessions Controller Model
-class SessionsController:
-  def __init__(self, sessionss: object, db: any):
-    self._sessions = sessionss
-    self._db = db
-    
-  def byUser(self, user: str):
-    try:
-      return [sessions for sessions in self._sessions if sessions["user"] == user][0]
-    except:
-      return None
-    
-  def add(self, sessiondata: object):
-    try:
-      newData = {
-        "user": sessiondata['user'],
-        "token": sessiondata['token']
-      }
-
-      self._db._db['sessionss'].append(newData)
-      self._db.save()
-      return True
-    except:
-      return False
-  
-  def modify(self, uid: str, sessionsdata: object):
-    sessions = self.byId(uid)
-    if not sessions: raise "Sessions not found!"
-    
-    edtSessions = {**sessions, **sessionsdata}
-    idx = [idx for idx, sessions in enumerate(self._sessions) if sessions['id'] == uid][0]
-    self._db._db['sessionss'][idx] = edtSessions
-    self._db.save()
-    return edtSessions
-  
-  def remove(self, uid: str):
-    if not self.byId(uid) == None:
-      idx = [idx for idx, sessions in enumerate(self._sessions) if sessions['id'] == uid][0]
-      del self._db._db['sessionss'][idx]
-      self._db.save()
-      return True
-    else:
-      return False
 
 class Database:
   def __init__(self, dbPath):
@@ -179,8 +135,4 @@ class Database:
     db = self._db
     self.users = UserController(db['users'], self)
     self.products = ProductController(db['products'], self)
-    self.sessions = SessionsController(db['sessions'], self)
     return self
-  
-
-Database('teste.json')

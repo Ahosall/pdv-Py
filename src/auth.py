@@ -1,35 +1,23 @@
-# By Feh's
-
 from getpass import getpass
 
-from .sessions import Sessions
+from .db import Database
 
-def loginPage():
-  print('#### LOGIN ####')
-  user = input("Login: ")
-  password = getpass("Senha: ")
+database = Database('db.json')
+
+users = database.users
+
+def check(login: str, pasw: str):
+  user = database.users.byLogin(login)
+  if user:
+    if user['password'] == pasw:
+      return True, user
+
+  return False, None
+
+def login():
+  print('==='*8)
+  login = input("Login: ")
+  passw = getpass("Senha: ")
+  print('==='*8)
   
-  return user, password
-
-class Auth:
-  def __init__(self, users, sessions):
-    self._db = users
-    self._sessions = Sessions(sessions)
-  
-  def auth(self, func):
-    def check():
-      if self._sessions.check():
-        func()
-      else:
-        print('User is not logged!')
-        user, password = loginPage()
-        self.login(user, password)
-
-    return check()
-
-  def login(self, user, password):
-    self._db
-    return False
-  
-  def logout(self, user):
-    return True
+  return check(login, passw)

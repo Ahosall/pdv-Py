@@ -1,6 +1,6 @@
-# PDVPy
+# PDV-Py
 
-Simples frente de caixa para mercearias pequenas, com sistema de estoque, e cadastro de usuários baseado em níveis.
+Um simples frente de caixa, com sistema de estoque, e cadastro de usuários baseado em níveis.
 
 ## Produtos
 
